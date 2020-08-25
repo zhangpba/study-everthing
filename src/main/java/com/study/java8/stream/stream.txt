@@ -1,0 +1,57 @@
+一. 引子
+1、为什么需要Stream ?
+
+　　Stream作为Java8的一大亮点，它与java.io包里的InputStream和OutputStream是完全不同的概念。它也不同于StAX对XML解析
+的Stream，也不是Amazon Kinesis对大数据实时处理的Stream。Java8中的Stream是对容器对象功能的增强，它专注于对容器对象进行
+各种非常便利、高效的 聚合操作（aggregate operation），或者大批量数据操作 (bulk data operation)。Stream API借助于同样
+新出现的Lambda表达式，极大的提高编程效率和程序可读性。同时，它提供串行和并行两种模式进行汇聚操作，并发模式能够充分利用
+多核处理器的优势，使用fork/join并行方式来拆分任务和加速处理过程。通常，编写并行代码很难而且容易出错, 但使用Stream API无需
+编写一行多线程的代码，就可以很方便地写出高性能的并发程序。所以说，Java8中首次出现的 java.util.stream是一个函数式语言+多
+核时代综合影响的产物。
+
+2、什么是聚合操作
+
+　　在传统的J2EE应用中，Java代码经常不得不依赖于关系型数据库的聚合操作来完成诸如：
+
+    * 客户每月平均消费金额
+    * 最昂贵的在售商品
+    * 本周完成的有效订单（排除了无效的）
+    * 取十个数据样本作为首页推荐
+这类的操作。但在当今这个数据大爆炸的时代，在数据来源多样化、数据海量化的今天，很多时候不得不脱离 RDBMS，或者以底层返回
+的数据为基础进行更上层的数据统计。而Java的集合API中，仅仅有极少量的辅助型方法，更多的时候是程序员需要用Iterator来遍历集
+合，完成相关的聚合应用逻辑，这是一种远不够高效、笨拙的方法。在Java7中，如果要发现type为grocery的所有交易，然后返回以交
+易值降序排序好的交易ID集合，我们需要这样写：
+        List<Transaction> groceryTransactions = new ArrayList<>();
+        for(Transaction t: transactions){
+            if(t.getType() == Transaction.GROCERY){
+                groceryTransactions.add(t);
+            }
+        }
+
+        Collections.sort(groceryTransactions, new Comparator(){
+            public int compare(Transaction t1, Transaction t2){
+                return t2.getValue().compareTo(t1.getValue());
+            }
+        });
+
+        List<Integer> transactionIds = new ArrayList<>();
+        for(Transaction t: groceryTransactions){
+            transactionsIds.add(t.getId());
+        }
+而在 Java 8 使用 Stream，代码更加简洁易读；而且使用并发模式，程序执行速度更快。
+        List<Integer> transactionsIds = transactions.parallelStream()
+                .filter(t -> t.getType() == Transaction.GROCERY)
+                .sorted(comparing(Transaction::getValue).reversed())
+                .map(Transaction::getId).collect(toList());
+
+        另外一点需要注意，forEach是terminal操作。因此，它执行后，Stream 的元素就被“消费”掉了，
+你无法对一个Stream进行两次terminal运算。下面的代码是错误的：
+
+        stream.forEach(element -> doOneThing(element));
+        stream.forEach(element -> doAnotherThing(element));
+
+相反，具有相似功能的intermediate操作peek可以达到上述目的。如下是出现在Stream api javadoc上的一个示例:
+        // peek 对每个元素执行操作并返回一个新的 Stream
+        Stream.of("one", "two", "three", "four").filter(e -> e.length() > 3)
+         .peek(e -> System.out.println("Filtered value: " + e)).map(String::toUpperCase)
+         .peek(e -> System.out.println("Mapped value: " + e)).collect(Collectors.toList());
