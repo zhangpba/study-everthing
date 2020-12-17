@@ -9,7 +9,7 @@ import java.util.Random;
 
 /**
  * 给list分批次
- * zhangpb 20190828
+ * zhangpba 20190828
  */
 public class SplitList {
     private static Logger logger = LoggerFactory.getLogger(SplitList.class);

@@ -12,8 +12,22 @@ import java.io.*;
 public class TxtTest {
 
     public static void main(String[] args) {
+
+        String sourcePath = getPathAndFile("test.txt");
+        String targetePath = sourcePath.replace(".txt", "1.txt");
+        copy(sourcePath, targetePath);
+
+    }
+
+    /**
+     * 复制文本
+     *
+     * @param sourcePath 源路径
+     * @param targetPath 目标路径
+     */
+    public static void copy(String sourcePath, String targetPath) {
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(getPathAndFile()), "UTF-8"));
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(sourcePath), "UTF-8"));
             String b = "";
             StringBuffer sb = new StringBuffer();
             try {
@@ -21,11 +35,14 @@ public class TxtTest {
                     //得到文件内容放到sb中
                     sb.append(b);
 
+                    // 换行
+                    sb.append(System.getProperty("line.separator"));
+
                     //这里可以写自己想对每一行的处理代码
                     System.out.println(b);
                 }
                 String s = sb.toString();
-                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(getPathAndFile().replace(".txt", "1.txt")), "UTF-8"));
+                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(targetPath), "UTF-8"));
                 bw.write(s);
                 bw.flush();
             } catch (IOException e) {
@@ -38,9 +55,9 @@ public class TxtTest {
 
 
     // 获取txt的位置
-    private static String getPathAndFile() {
+    private static String getPathAndFile(String fileName) {
 
-        String filePath = PathUtil.getPackagePath() + "txt" + System.getProperty("file.separator") + "test.txt";
+        String filePath = PathUtil.getSpecific("txt") + fileName;
         System.out.println(filePath);
 
         return filePath;

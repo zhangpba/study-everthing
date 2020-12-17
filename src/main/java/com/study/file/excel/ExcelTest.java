@@ -90,8 +90,7 @@ public class ExcelTest {
 
     // 获取excel的位置
     private static String getPathAndFile() {
-        String filePath = PathUtil.getPackagePath() + "excel" + System.getProperty("file.separator") + "test.xlsx";
-
+        String filePath = PathUtil.getSpecific("excel") + "test.xlsx";
         System.out.println(filePath);
 
         return filePath;

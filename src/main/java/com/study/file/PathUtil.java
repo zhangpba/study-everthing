@@ -29,4 +29,15 @@ public class PathUtil {
 
         return filePath;
     }
+
+
+    /**
+     * 获取具体路径
+     * @param word txt-文本；excel-表格；word-文档
+     * @return
+     */
+    public static String getSpecific(String word) {
+        String filePath = getPackagePath() + word + System.getProperty("file.separator");
+        return filePath;
+    }
 }
