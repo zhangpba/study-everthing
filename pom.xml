@@ -146,6 +146,13 @@
             <artifactId>poi-scratchpad</artifactId>
             <version>3.8</version>
         </dependency>
+
+        <!--mongodb 2021-06-15-->
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongodb-driver</artifactId>
+            <version>3.2.2</version>
+        </dependency>
     </dependencies>
 
 </project>
