@@ -19,6 +19,8 @@ import java.util.List;
 
 /**
  * mongdb帮助类
+ * 安装mongodb        https://blog.csdn.net/weixin_41466575/article/details/105326230
+ * java操作mongodb    https://www.cnblogs.com/sa-dan/p/6836055.html
  *
  * @author zhangpba
  * @date 2021-06-15
