@@ -1,4 +1,4 @@
-package com.study.array.queue;
+package com.study.array.sequeue;
 
 /**
  * 队列：用java写一个队列

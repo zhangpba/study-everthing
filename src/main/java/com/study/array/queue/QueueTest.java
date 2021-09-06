@@ -1,35 +1,24 @@
 package com.study.array.queue;
 
 /**
- * 队列测试
- *
- * @author zhangpba
- * @date 2021-09-05
+ * 测试队列信息
  */
 public class QueueTest {
 
-    public static void main(String[] args) throws Exception {
-        QueueApi<Integer> queue = new SeqQueue(10);
-//        QueueApi<Integer> queue = new SeqCycleQueue<>(10);
-        queue.enQueue(1);
-        queue.enQueue(2);
-        queue.enQueue(3);
-        queue.enQueue(4);
-        queue.enQueue(5);
-        queue.enQueue(6);
-        System.out.println(queue);
-        System.out.println(queue.length());
-        queue.deQueue();
-        queue.deQueue();
-        queue.deQueue();
-        System.out.println(queue);
-        System.out.println(queue.length());
-        queue.enQueue(7);
-        queue.enQueue(8);
-        queue.enQueue(9);
-        queue.enQueue(10);
-        System.out.println(queue);
-        System.out.println(queue.length());
-        queue.enQueue(11);
+    public static void main(String[] args) {
+        MyQueue queue = new MyQueue();
+        QueueProducer producer = new QueueProducer(queue);
+        QueueProducer producer1 = new QueueProducer(queue);
+        new Thread(producer).start();
+        new Thread(producer1).start();
+        try {
+            Thread.sleep(3000);
+        } catch (Exception e) {
+
+        }
+        QueueConsumer consumer = new QueueConsumer(queue);
+        QueueConsumer consumer1 = new QueueConsumer(queue);
+        new Thread(consumer).start();
+        new Thread(consumer1).start();
     }
 }
