@@ -1,0 +1,21 @@
+1 编写内存溢出对的代码
+
+2 配置启动参数
+在idea中的Edit Configuration的VM Options中添加如下参数
+-verbose:gc -Xms20m -Xmn10m -Xmx20m -XX:+PrintGCDetails -XX:SurvivorRatio=8
+
+-verbose:gc：控制台输出GC日志
+-Xms：初始内存大小(memory size)
+-Xmn：最小内存
+-Xmx：最大内存
+-XX:+PrintGCDetails：控制台输出GC具体日志信息
+-XX:SurvivorRatio=8：Eden区占比，新生代分为Eden区和Survivor区(from/to Survivor)，SurvivorRatio参数定义了Eden、Survivor的比例，默认为8，也就是Eden占新生代的8/10
+
+3 本地通过visualVM来观察内存中的变化，或者用jmap -heap pid来查看老年代，Eden和s0,s1区域内存占用的情况变化
+
+4 查看最耗内存的对象：jmap -histo:live pid| more
+
+
+参考资料：
+    OOM异常基本定位思路：https://blog.csdn.net/qq_43128724/article/details/115105655
+    OOM问题定位：https://www.kancloud.cn/java-jdxia/java/1482047
