@@ -160,6 +160,14 @@
             <artifactId>mongodb-driver</artifactId>
             <version>3.2.2</version>
         </dependency>
+
+        <!-- sha256 2022-01-28-->
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.14</version>
+        </dependency>
+
     </dependencies>
 
 </project>
