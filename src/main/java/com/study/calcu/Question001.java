@@ -3,8 +3,7 @@ package com.study.calcu;
 import java.util.Scanner;
 
 /**
- * @author zhangpba
- * @description 题目描述：
+ * 题目描述：
  * 如果三个正整数A、B、C ,A²+B²=C²则为勾股数
  * 如果ABC之间两两互质，即A与B，A与C，B与C均互质没有公约数，
  * 则称其为勾股数元组。
@@ -20,9 +19,11 @@ import java.util.Scanner;
  * 输出格式A B C
  * 多组勾股数元组，按照A B C升序的排序方式输出。
  * 若给定范围内，找不到勾股数元组时，输出Na。
+ *
+ * @author zhangpba
  * @date 2022/6/27
  */
-public class Querstion001 {
+public class Question001 {
 
     public static void main(String[] args) {
         try {
@@ -31,7 +32,7 @@ public class Querstion001 {
             int m = scanner.nextInt();
             solution(n, m);
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
 
     }
@@ -42,6 +43,7 @@ public class Querstion001 {
             for (int b = a + 1; b < m; b++) { // 第二个数
                 for (int c = b + 1; c < m; c++) { //第三个数
                     // int a = Math.pow(b, 2);//表示b的平方
+                    // a、b、c互为质数，且 (a*a + b*b = c*c)
                     if (relativelyPrime(a, b) && relativelyPrime(b, c) && relativelyPrime(a, c) && (Math.pow(a, 2) + Math.pow(b, 2) == Math.pow(c, 2))) {
                         count++;
                         System.out.printf("%d %d %d \n", a, b, c);
@@ -59,7 +61,7 @@ public class Querstion001 {
         int min = Math.min(x, y);
         // 开根号
         double sqrt = Math.sqrt(min);
-        for (int i = 0; i < sqrt; i++) {
+        for (int i = 2; i < sqrt; i++) {
             if (x % i == 0 && y % i == 0) {
                 return false;
             }
