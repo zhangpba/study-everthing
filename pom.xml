@@ -19,10 +19,16 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
@@ -135,11 +141,11 @@
 
         <!--2020-07-27 如果你自己写的代码，有别的工程需要依赖，install 本地安装一下，（或者deploy推上私服），别的工程增加依赖，就可以用了
         这个是引用 study-springboot-plugin中的common的例子-->
-        <dependency>
-            <groupId>com.study</groupId>
-            <artifactId>study-common</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>com.study</groupId>-->
+        <!--            <artifactId>study-common</artifactId>-->
+        <!--            <version>1.0-SNAPSHOT</version>-->
+        <!--        </dependency>-->
 
         <!--word读写 2020-12-17-->
         <dependency>
@@ -161,6 +167,17 @@
             <version>3.2.2</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.FreeMarker</groupId>
+            <artifactId>FreeMarker</artifactId>
+            <version>2.3.28</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mortbay.jetty</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5-20081211</version>
+        </dependency>
+
         <!-- sha256 2022-01-28-->
         <dependency>
             <groupId>commons-codec</groupId>
@@ -168,6 +185,12 @@
             <version>1.14</version>
         </dependency>
 
+        <!--java调用python 2022-09-26-->
+        <dependency>
+            <groupId>org.python</groupId>
+            <artifactId>jython-standalone</artifactId>
+            <version>2.7.0</version>
+        </dependency>
     </dependencies>
 
 </project>
