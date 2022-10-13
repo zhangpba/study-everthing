@@ -1,9 +1,27 @@
 package com.study.kafka;
 
-import org.apache.kafka.clients.admin.*;
+import org.apache.kafka.clients.admin.AdminClient;
+import org.apache.kafka.clients.admin.AdminClientConfig;
+import org.apache.kafka.clients.admin.AlterConfigOp;
+import org.apache.kafka.clients.admin.AlterConfigsResult;
+import org.apache.kafka.clients.admin.Config;
+import org.apache.kafka.clients.admin.ConfigEntry;
+import org.apache.kafka.clients.admin.CreateTopicsResult;
+import org.apache.kafka.clients.admin.DeleteTopicsResult;
+import org.apache.kafka.clients.admin.DescribeConfigsResult;
+import org.apache.kafka.clients.admin.DescribeTopicsResult;
+import org.apache.kafka.clients.admin.ListTopicsOptions;
+import org.apache.kafka.clients.admin.ListTopicsResult;
+import org.apache.kafka.clients.admin.NewTopic;
+import org.apache.kafka.clients.admin.TopicDescription;
 import org.apache.kafka.common.config.ConfigResource;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -17,7 +35,7 @@ public class TopicAdminClient {
     /**
      * topic的名称
      */
-    private static final String TOPIC_NAME = "zhangpba_topic";
+    private static final String TOPIC_NAME = "test";
 
     public static void main(String[] args) throws Exception {
 
@@ -43,7 +61,7 @@ public class TopicAdminClient {
      */
     public static AdminClient adminClient() {
         Properties properties = new Properties();
-        properties.setProperty(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
+        properties.setProperty(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "9.134.236.215:9092");
         // 创建AdminClient实例
         return AdminClient.create(properties);
     }
@@ -94,7 +112,7 @@ public class TopicAdminClient {
     /**
      * 删除Topic
      */
-    public static void delTopics() throws ExecutionException, InterruptedException {
+    public static void delTopics(List<String> topicNames) throws ExecutionException, InterruptedException {
         AdminClient adminClient = adminClient();
 
         List<String> list = new ArrayList<>();
@@ -107,7 +125,7 @@ public class TopicAdminClient {
     /**
      * 查询Topic的描述信息
      */
-    public static void describeTopics() throws ExecutionException, InterruptedException {
+    public static void describeTopics(String topicName) throws ExecutionException, InterruptedException {
         AdminClient adminClient = adminClient();
 
         List<String> list = new ArrayList<>();
