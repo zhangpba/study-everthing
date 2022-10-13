@@ -1,4 +1,4 @@
-package com.study.programming;
+package com.study.calc;
 
 import java.util.Arrays;
 
@@ -8,7 +8,7 @@ import java.util.Arrays;
  * @author zhangpba
  * @date 2021-07-22
  */
-public class Main20210722 {
+public class Question20210722 {
 
     public static void main(String[] args) {
 

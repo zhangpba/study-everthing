@@ -1,4 +1,4 @@
-package com.study.programming;
+package com.study.calc;
 
 /**
  * 编程练习
@@ -6,7 +6,7 @@ package com.study.programming;
  * @author zhangpba
  * @date 2021-07-27
  */
-public class Main20210727 {
+public class Question20210727 {
 
 
     public static void main(String[] args) {
