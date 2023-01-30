@@ -2,8 +2,13 @@ package com.study.mongdb;
 
 import com.mongodb.client.ListIndexesIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
+import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.IndexOptions;
+import com.mongodb.client.model.Updates;
 import org.bson.Document;
+
+import java.util.Arrays;
 
 /**
  * mongdb测试类
@@ -27,29 +32,27 @@ public class MongodbTest {
             System.out.println("查询结果：" + document.toJson());
         }
 
-//        coll.find(Filters.and(Filters.eq("x", 1), Filters.lt("y", 3)));
-//        coll.find(and(eq("x", 1), lt("y", 3)));
-//        coll.find().sort(ascending("title"));
-//        coll.find().sort(new Document("id", 1));
-//        coll.find(new Document("$or", Arrays.asList(new Document("owner", "tom"), new Document("words", new Document("$gt", 350)))));
-//        coll.find().projection(fields(include("title", "owner"), excludeId()));
-        //coll.updateMany(Filters.eq("validata", 1), Updates.set("validata", 0));
-        //coll.updateMany(Filters.eq("validata", 1), new Document("$unset", new Document("jigou", "")));//删除某个字段
-        //coll.updateMany(Filters.eq("validata", 1), new Document("$rename", new Document("affiliation", "affiliation_full")));//修改某个字段名
-        //coll.updateMany(Filters.eq("validata", 1), new Document("$rename", new Document("affiliationMeta", "affiliation")));
-        //coll.updateMany(Filters.eq("validata", 1), new Document("$set", new Document("validata", 0)));//修改字段值
-        //        MongoCursor<Document> cursor1 =coll.find(Filters.eq("ut_wos", "WOS:000382970200003")).iterator();
-        //        while(cursor1.hasNext()){
-        //            Document sd=cursor1.next();
-        //            System.out.println(sd.toJson());
-        //            coll.insertOne(sd);
-        //        }
+        coll.find(Filters.and(Filters.eq("x", 1), Filters.lt("y", 3)));
+        coll.find(Filters.and(Filters.eq("x", 1), Filters.lt("y", 3)));
+        coll.find().sort(new Document("id", 1));
+        coll.find(new Document("$or", Arrays.asList(new Document("owner", "tom"), new Document("words", new Document("$gt", 350)))));
+        coll.updateMany(Filters.eq("validata", 1), Updates.set("validata", 0));
+        coll.updateMany(Filters.eq("validata", 1), new Document("$unset", new Document("jigou", "")));//删除某个字段
+        coll.updateMany(Filters.eq("validata", 1), new Document("$rename", new Document("affiliation", "affiliation_full")));//修改某个字段名
+        coll.updateMany(Filters.eq("validata", 1), new Document("$rename", new Document("affiliationMeta", "affiliation")));
+        coll.updateMany(Filters.eq("validata", 1), new Document("$set", new Document("validata", 0)));//修改字段值
+        MongoCursor<Document> cursor1 = coll.find(Filters.eq("ut_wos", "WOS:000382970200003")).iterator();
+        while (cursor1.hasNext()) {
+            Document sd = cursor1.next();
+            System.out.println(sd.toJson());
+            coll.insertOne(sd);
+        }
 
-        //        MongoCursor<Document> cursor1 =coll.find(Filters.elemMatch("affInfo", Filters.eq("firstorg", 1))).iterator();
-        //        while(cursor1.hasNext()){
-        //            Document sd=cursor1.next();
-        //            System.out.println(sd.toJson());
-        //        }
+//        MongoCursor<Document> cursor1 = coll.find(Filters.elemMatch("affInfo", Filters.eq("firstorg", 1))).iterator();
+//        while (cursor1.hasNext()) {
+//            Document sd = cursor1.next();
+//            System.out.println(sd.toJson());
+//        }
         //查询只返回指定字段
         // MongoCursor<Document> doc= coll.find().projection(Projections.fields(Projections.include("ut_wos","affiliation"),Projections.excludeId())).iterator();
         //"ut_wos" : "WOS:000382970200003"
@@ -58,25 +61,25 @@ public class MongodbTest {
         //coll.updateOne(Filters.eq("ut_wos", "WOS:000382970200003"), new Document("$set", new Document("validata", 0)));
         //long isd=coll.count(Filters.elemMatch("affInfo", Filters.elemMatch("affiliationJGList", Filters.eq("sid", 0))));
         // System.out.println(isd);
-        //MongoCursor<Document> doc= coll.find(Filters.elemMatch("affInfo", Filters.elemMatch("affiliationJGList", Filters.ne("sid", 0)))).projection(Projections.fields(Projections.elemMatch("affInfo"),Projections.excludeId())).iterator();
-        //       MongoCursor<Document> doc= coll.find().projection(Projections.include("affInfo","ssid")).iterator();
-        //       while(doc.hasNext()){
-        //            Document sd=doc.next();
-        //            System.out.println(sd.toJson());
-        //
-        //        }
+//        MongoCursor<Document> doc = coll.find(Filters.elemMatch("affInfo", Filters.elemMatch("affiliationJGList", Filters.ne("sid", 0)))).projection(Projections.fields(Projections.elemMatch("affInfo"), Projections.excludeId())).iterator();
+//        MongoCursor<Document> doc = coll.find().projection(Projections.include("affInfo", "ssid")).iterator();
+//        while (doc.hasNext()) {
+//            Document sd = doc.next();
+//            System.out.println(sd.toJson());
+//
+//        }
         MongodbUtils.instance.close();
         // 插入多条
-        //         for (int i = 1; i <= 4; i++) {
-        //         Document doc = new Document();
-        //         doc.put("name", "zhoulf");
-        //         doc.put("school", "NEFU" + i);
-        //         Document interests = new Document();
-        //         interests.put("game", "game" + i);
-        //         interests.put("ball", "ball" + i);
-        //         doc.put("interests", interests);
-        //         coll.insertOne(doc);
-        //         }
+        for (int i = 1; i <= 4; i++) {
+            Document doc = new Document();
+            doc.put("name", "zhoulf");
+            doc.put("school", "NEFU" + i);
+            Document interests = new Document();
+            interests.put("game", "game" + i);
+            interests.put("ball", "ball" + i);
+            doc.put("interests", interests);
+            coll.insertOne(doc);
+        }
         //
                 /* MongoCursor<Document> sd =coll.find().iterator();
          while(sd.hasNext()){

@@ -27,9 +27,8 @@ import java.util.List;
  */
 public enum MongodbUtils {
 
-
     /**
-     * 定义一个美剧元素，他表示累的一个实例
+     * 定义一个枚举元素，他表示类的一个实例
      */
     instance;
 
@@ -37,67 +36,42 @@ public enum MongodbUtils {
 
     static {
         System.out.println("===============MongoDBUtil初始化========================");
-        String ip = "127.0.0.1";
+        String ip = "9.134.236.215";
         int port = 27017;
-        instance.mongoClient = new MongoClient(ip, port);
+        mongoClient = new MongoClient(ip, port);
         // 大部分用户使用mongodb都在安全内网下，但如果将mongodb设为安全验证模式，就需要在客户端提供用户名和密码：
         // boolean auth = db.authenticate(myUserName, myPassword);
         MongoClientOptions.Builder options = new MongoClientOptions.Builder();
         options.cursorFinalizerEnabled(true);
         // options.autoConnectRetry(true);// 自动重连true
         // options.maxAutoConnectRetryTime(10); // the maximum auto connect retry time
-        options.connectionsPerHost(300);// 连接池设置为300个连接,默认为100
-        options.connectTimeout(30000);// 连接超时，推荐>3000毫秒
-        options.maxWaitTime(5000); //
-        options.socketTimeout(0);// 套接字超时时间，0无限制
-        options.threadsAllowedToBlockForConnectionMultiplier(5000);// 线程队列数，如果连接线程排满了队列就会抛出“Out of semaphores to get db”错误。
-        options.writeConcern(WriteConcern.SAFE);//
+        // 连接池设置为300个连接,默认为100
+        options.connectionsPerHost(300);
+        // 连接超时，推荐>3000毫秒
+        options.connectTimeout(30000);
+        options.maxWaitTime(5000);
+        // 套接字超时时间，0无限制
+        options.socketTimeout(0);
+        // 线程队列数，如果连接线程排满了队列就会抛出“Out of semaphores to get db”错误
+        options.threadsAllowedToBlockForConnectionMultiplier(5000);
+        options.writeConcern(WriteConcern.SAFE);
         options.build();
     }
 
     // ------------------------------------共用方法---------------------------------------------------
 
     /**
-     * 获取DB实例 - 指定DB
+     * 获取库实例
      *
-     * @param dbName
+     * @param dbName 库名称
      * @return
      */
-    public MongoDatabase getDB(String dbName) {
+    public static MongoDatabase getDB(String dbName) {
         if (dbName != null && !"".equals(dbName)) {
             MongoDatabase database = mongoClient.getDatabase(dbName);
             return database;
         }
         return null;
-    }
-
-    /**
-     * 获取collection对象 - 指定Collection
-     *
-     * @param collName
-     * @return
-     */
-    public MongoCollection<Document> getCollection(String dbName, String collName) {
-        if (null == collName || "".equals(collName)) {
-            return null;
-        }
-        if (null == dbName || "".equals(dbName)) {
-            return null;
-        }
-        MongoCollection<Document> collection = mongoClient.getDatabase(dbName).getCollection(collName);
-        return collection;
-    }
-
-    /**
-     * 查询DB下的所有表名
-     */
-    public List<String> getAllCollections(String dbName) {
-        MongoIterable<String> colls = getDB(dbName).listCollectionNames();
-        List<String> _list = new ArrayList<String>();
-        for (String s : colls) {
-            _list.add(s);
-        }
-        return _list;
     }
 
     /**
@@ -112,31 +86,79 @@ public enum MongodbUtils {
 
     /**
      * 删除一个数据库
+     *
+     * @param dbName 库名称
      */
-    public void dropDB(String dbName) {
+    public static void dropDB(String dbName) {
         getDB(dbName).drop();
     }
 
+
     /**
-     * 查找对象 - 根据主键_id
+     * 获取具体的集合对象
      *
-     * @param coll
-     * @param id
+     * @param dbName   库名称
+     * @param collName 集合名称
+     * @return
+     */
+    public MongoCollection<Document> getCollection(String dbName, String collName) {
+        if (null == collName || "".equals(collName)) {
+            return null;
+        }
+        if (null == dbName || "".equals(dbName)) {
+            return null;
+        }
+        MongoCollection<Document> collection = mongoClient.getDatabase(dbName).getCollection(collName);
+        return collection;
+    }
+
+    /**
+     * 查询库下的所有集合名（表名）
+     *
+     * @param dbName 库名称
+     * @return
+     */
+    public List<String> getAllCollections(String dbName) {
+        MongoIterable<String> colls = getDB(dbName).listCollectionNames();
+        List<String> list = new ArrayList<String>();
+        for (String s : colls) {
+            list.add(s);
+        }
+        return list;
+    }
+
+    /**
+     * 根据主键_id查询文档对象
+     *
+     * @param coll 集合对象
+     * @param id   文档ID
      * @return
      */
     public Document findById(MongoCollection<Document> coll, String id) {
-        ObjectId _idobj = null;
+        ObjectId idobj = null;
         try {
-            _idobj = new ObjectId(id);
+            idobj = new ObjectId(id);
         } catch (Exception e) {
             return null;
         }
-        Document myDoc = coll.find(Filters.eq("_id", _idobj)).first();
+        Document myDoc = coll.find(Filters.eq("_id", idobj)).first();
         return myDoc;
     }
 
     /**
-     * 统计数
+     * 删除集合
+     *
+     * @param dbName   库名称
+     * @param collName 集合名称
+     */
+    public void dropCollection(String dbName, String collName) {
+        getDB(dbName).getCollection(collName).drop();
+    }
+
+    /**
+     * 统计集合中的文档数
+     *
+     * @param coll 集合对象
      */
     public int getCount(MongoCollection<Document> coll) {
         int count = (int) coll.count();
@@ -160,10 +182,10 @@ public enum MongodbUtils {
 
 
     /**
-     * 通过ID删除
+     * 通过ID删除文档
      *
-     * @param coll
-     * @param id
+     * @param coll 集合对象
+     * @param id   文档ID
      * @return
      */
     public int deleteById(MongoCollection<Document> coll, String id) {
@@ -182,10 +204,11 @@ public enum MongodbUtils {
 
     /**
      * FIXME
+     * 修改文档
      *
-     * @param coll
-     * @param id
-     * @param newdoc
+     * @param coll   集合对象
+     * @param id     文档ID
+     * @param newdoc 修改后的文档内容
      * @return
      */
     public Document updateById(MongoCollection<Document> coll, String id, Document newdoc) {
@@ -196,17 +219,14 @@ public enum MongodbUtils {
             return null;
         }
         Bson filter = Filters.eq("_id", _idobj);
-        // coll.replaceOne(filter, newdoc); // 完全替代
+//        coll.replaceOne(filter, newdoc); // 完全替代
         coll.updateOne(filter, new Document("$set", newdoc));
         return newdoc;
     }
 
-    public void dropCollection(String dbName, String collName) {
-        getDB(dbName).getCollection(collName).drop();
-    }
 
     /**
-     * 关闭Mongodb
+     * 关闭Mongodb链接
      */
     public void close() {
         if (mongoClient != null) {
