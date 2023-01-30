@@ -36,7 +36,7 @@ public enum MongodbUtils {
 
     static {
         System.out.println("===============MongoDBUtil初始化========================");
-        String ip = "9.134.236.215";
+        String ip = "127.0.0.1";
         int port = 27017;
         mongoClient = new MongoClient(ip, port);
         // 大部分用户使用mongodb都在安全内网下，但如果将mongodb设为安全验证模式，就需要在客户端提供用户名和密码：
