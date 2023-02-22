@@ -1,0 +1,17 @@
+此包下面对应了牛客网上103道机试题的答案：
+https://www.nowcoder.com/exam/oj/ta?page=1&tpId=37&type=37
+
+public class Test07 {
+
+    public static void main(String[] args) {
+        System.out.println("A-a= " + ('A' - 'a'));
+
+        String I = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String i = "abcdefghijklmnopqrstuvwxyz";
+        for (int j = 0; j < I.length(); j++) {
+            if ('A' <= I.charAt(j) && I.charAt(j) <= 'a') {
+                System.out.println("26个大小写字母为: " + I.charAt(j) + i.charAt(j) + "两个相减：" + (i.charAt(j) - I.charAt(j)));
+            }
+        }
+    }
+}
