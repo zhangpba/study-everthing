@@ -23,6 +23,6 @@ public class AccountProxy implements IAccountService{
      * 前置增强
      */
     private void before() {
-        System.out.println("对转账人身份进行验证.");
+        System.out.println("代理类-对转账人身份进行验证.");
     }
 }
