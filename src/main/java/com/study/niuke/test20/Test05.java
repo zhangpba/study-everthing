@@ -1,4 +1,4 @@
-package com.study.niuke;
+package com.study.niuke.test20;
 
 import java.util.HashMap;
 import java.util.Scanner;

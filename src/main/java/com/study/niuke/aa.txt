@@ -15,3 +15,18 @@ public class Test07 {
         }
     }
 }
+
+1、获取集合中的最小值：
+    Collection<Integer> values = map.values();
+    Integer min = Collections.min(values);
+
+2、String
+    substring(0,1)：截取第一个字符
+    substring(1)：截取第一个字符后边的所有字符
+    charAt(i)：获取字符串中i位置的char字符
+
+3 先将num转化为2、8、16进制
+    Integer中有一些将10进制转化为 2（toBinaryString）、8（toOctalString）、16（toHexString）进制的方法
+    String str = Integer.toBinaryString(num);
+    String str = Integer.toOctalString(num);
+    String str = Integer.toHexString(num);
